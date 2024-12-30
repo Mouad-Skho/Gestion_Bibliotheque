@@ -1,6 +1,6 @@
 <?php $page="Livers" ?>
 <?php 
-include("bd.php");
+include("./includes/bd.php");
 $sql = "SELECT livres.id_livre, livres.titre, livres.img,livres.description, auteurs.nom AS auteur
 FROM livres
 JOIN auteurs ON livres.id_auteur = auteurs.id_auteur;
