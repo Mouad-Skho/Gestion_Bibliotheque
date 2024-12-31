@@ -1,15 +1,19 @@
-<?php $page="Modifier Auteur" ?>
+<?php
+$page="Modifier Auteur";
+include("../../shared/libs/bd.php");
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- BEGIN: head -->
 
-<?php include("component/head.php");?>
+<?php include("../includes/head.php");?>
 <!-- END: head -->
 <body class="p-4">
     <div class="container-fluid">
         <div class="row">
             <!-- BEGIN: Side Menu -->
-            <?php include("component/sidemenu.php");?>
+            <?php include("../includes/sidemenu.php");?>
             <!-- END: Side Menu -->
             <!-- BEGIN: Main -->
 
@@ -94,7 +98,7 @@
 
         </div>
     </div>
-    <?php include('script.php');?>
+    <?php include("../includes/script.php");?>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/cjs/lucide.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

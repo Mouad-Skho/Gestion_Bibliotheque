@@ -1,5 +1,5 @@
 <?php 
-include("bd.php");
+include("../../shared/libs/bd.php");
 
 $sql = "SELECT * FROM auteurs";
 $result = $pdo->query($sql);
@@ -71,8 +71,8 @@ if (isset($_POST['Ajouter'])) {
 <html lang="en">
     <!-- BEGIN: head -->
 
-<?php include("component/head.php");?>
-<!-- END: head -->
+<?php include("../includes/head.php");?>
+    <!-- END: head -->
 <body class="p-4">
     <div class="toast-container position-static position-fixed top-0 end-0 mt-2 me-2">        
         <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -101,7 +101,7 @@ if (isset($_POST['Ajouter'])) {
     <div class="container-fluid">
         <div class="row">
             <!-- BEGIN: Side Menu -->
-            <?php include("component/sidemenu.php");?>
+            <?php include("../includes/sidemenu.php");?>
             <!-- END: Side Menu -->
             <!-- BEGIN: Main -->
 
@@ -227,6 +227,6 @@ if (isset($_POST['Ajouter'])) {
                 // Run on page load
                 toggleEtatField();
             });</script>
-            <?php include('script.php');?>
-</body>
+    <?php include("../includes/script.php");?>
+    </body>
 </html>

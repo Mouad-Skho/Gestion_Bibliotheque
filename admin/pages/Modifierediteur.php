@@ -1,18 +1,19 @@
 <?php 
 $page="Modifier Editeur";
+include("../../shared/libs/bd.php");
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- BEGIN: head -->
 
-<?php include("component/head.php");?>
+<?php include("../includes/head.php");?>
 <!-- END: head -->
 <body class="p-4">
     <div class="container-fluid">
         <div class="row">
             <!-- BEGIN: Side Menu -->
-            <?php include("component/sidemenu.php");?>
+            <?php include("../includes/sidemenu.php");?>
             <!-- END: Side Menu -->
             <!-- BEGIN: Main -->
 
@@ -88,7 +89,7 @@ $page="Modifier Editeur";
 
         </div>
     </div>
-    <?php include('script.php');?>
+    <?php include("../includes/script.php");?>
 
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/cjs/lucide.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>

@@ -3,7 +3,7 @@
 header('Content-Type: application/json');
 
 
-include("bd.php");
+include("../../../shared/libs/bd.php");
 
 // التحقق من وجود id_livre
 if (!isset($_GET['id_livre'])) {

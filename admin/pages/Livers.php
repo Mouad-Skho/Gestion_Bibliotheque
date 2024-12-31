@@ -1,6 +1,6 @@
 <?php $page="Livers" ?>
 <?php 
-include("bd.php");
+include("../../shared/libs/bd.php");
 $sql = "SELECT livres.*, auteurs.nom AS auteur, categories.name 
 FROM livres
 JOIN auteurs ON livres.id_auteur = auteurs.id_auteur
@@ -15,14 +15,14 @@ $livres = $result ->fetchAll(PDO::FETCH_OBJ);
 
 <!-- BEGIN: head -->
 
-<?php include("component/head.php");?>
+<?php include("../includes/head.php");?>
 <!-- END: head -->
 
 <body class="p-4">
     <div class="container-fluid">
         <div class="row">
             <!-- BEGIN: Side Menu -->
-            <?php include("component/sidemenu.php");?>
+            <?php include("../includes/sidemenu.php");?>
             <!-- END: Side Menu -->
             <div class="col pt-2 bg-content rounded-5">
                 <div class="">
@@ -403,7 +403,7 @@ $livres = $result ->fetchAll(PDO::FETCH_OBJ);
             // }
 </script>
 
-<?php include('script.php');?>
+<?php include("../includes/script.php");?>
 </body>
 
 </html>

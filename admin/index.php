@@ -1,1 +1,1 @@
-<?php header("location: Livers.php");
+<?php header("location: pages/Livers.php");

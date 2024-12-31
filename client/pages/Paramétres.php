@@ -1,17 +1,20 @@
-<?php $page="Paramétres" ?>
+<?php
+$page="Paramétres";
+include("../../shared/libs/bd.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <!-- BEGIN: head -->
 
-<?php include("component/head.php")?>
+<?php include("../includes/head.php");?>
 <!-- END: head -->
 <body class="p-4">
     <div class="container-fluid">
         <div class="row">
              <!-- BEGIN: Side Menu -->
-            <?php include("component/sidemenu.php")?>
+             <?php include("../includes/sidemenu.php");?>
             <!-- END: Side Menu -->
             <!-- BEGIN: Main -->
 

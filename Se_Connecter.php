@@ -1,10 +1,46 @@
+<?php
+include('shared/libs/bd.php');
+if(isset($_POST["login"])) {
+    $email = $_POST["email"];
+    $password = $_POST["password"]; 
+
+    $sql = ("SELECT * FROM membres WHERE email = ? AND password = ?"); 
+    $result = $pdo -> prepare($sql);
+    $result -> execute([$email, $password]);
+
+    $user = $result -> fetch(PDO::FETCH_OBJ);
+
+    if($user && !empty($user)){
+
+        $_SESSION["id_user"] = $user->id_membre;
+
+        $_SESSION["username"] = $user->nom;
+
+        $_SESSION["email"] = $user->email;
+        $_SESSION["role"] = $user->role;
+        if($user->role == 'admin'){
+                header("Location: admin\index.php");
+        }else{
+                header("Location: client\index.php");
+            }
+    
+    }else{
+        echo "Adresse e-mail ou mot de passe incorrect.";
+    } 
+}
+?>
+<?php
+ 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Se Connecter</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+GB+J:ital,wght@0,100..400;1,100..400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">    
    
@@ -111,7 +147,7 @@
                     
                 </div>
                 <div class="my-auto">
-                    <img src="illustration.svg" alt="..." class="w-50" style="margin-top: -4rem;">
+                    <img src="assets/images/illustration.svg" alt="..." class="w-50" style="margin-top: -4rem;">
                     <div class="text-4xl mt-5 fw-medium text-white">
                         A few more clicks to 
                         <br>
@@ -124,10 +160,10 @@
             <div class="col my-auto">
                 <div class="my-auto me-5 w-auto mx-auto px-5">
                     <h2 class="mb-4" >Se Connecter</h2>
-                    <form action="" class="d-flex flex-column">
+                    <form method="post" class="d-flex flex-column">
                         <div class="intro-x mt-8">
-                            <input type="text" class="intro-x login__input form-control py-3 px-4 d-block" placeholder="Email">
-                            <input type="password" class="intro-x login__input form-control py-3 px-4 d-block mt-4" placeholder="Password">
+                            <input type="text" name="email" class="intro-x login__input form-control py-3 px-4 d-block" placeholder="Email">
+                            <input type="password" name="password" class="intro-x login__input form-control py-3 px-4 d-block mt-4" placeholder="Password">
                         </div>
                         <div class="intro-x d-flex justify-content-between  text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
                             <div class="d-flexitems-center mr-auto">
@@ -137,7 +173,7 @@
                             <a href="">Forgot Password?</a> 
                         </div>
                         <div class="d-flex align-items-start mt-4 text-center">
-                            <button class="btn btn-primary py-2 px-4 me-3 w-full">Login</button>
+                            <button name="login" type="submit" class="btn btn-primary py-2 px-4 me-3 w-full">Login</button>
                             <button class="btn btn-outline-secondary py-2 px-4 w-full">Register</button>
                         </div>                    
                     </form>

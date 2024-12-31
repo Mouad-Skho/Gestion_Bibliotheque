@@ -1,6 +1,6 @@
 <?php $page="Liste Auteurs" ?>
 <?php
-include("bd.php");
+include("../../shared/libs/bd.php");
 $sql = "SELECT *
 FROM auteurs;
 ";
@@ -13,7 +13,7 @@ $auteurs = $result ->fetchAll(PDO::FETCH_OBJ);
 
 <!-- BEGIN: head -->
 
-<?php include("component/head.php")?>
+<?php include("../includes/head.php");?>
 <!-- END: head -->
 
 <body class="p-4">
@@ -21,7 +21,7 @@ $auteurs = $result ->fetchAll(PDO::FETCH_OBJ);
         <div class="row">
             <!-- BEGIN: Side Menu -->
 
-            <?php include("component/sidemenu.php")?>
+            <?php include("../includes/sidemenu.php");?>
 
             <!-- END: Side Menu -->
             <div class="col pt-2 bg-content rounded-5">
@@ -223,7 +223,7 @@ $auteurs = $result ->fetchAll(PDO::FETCH_OBJ);
 
 
 
-                <?php include('script.php');?>
+<?php include("../includes/script.php");?>
 </body>
 
 </html>

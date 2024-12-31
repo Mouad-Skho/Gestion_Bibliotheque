@@ -1,19 +1,22 @@
-<?php $page="Historique" ?>
+<?php 
+$page="Historique";
+include("../../shared/libs/bd.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <!-- BEGIN: head -->
 
-<?php include("component/head.php")?>
+<?php include("../includes/head.php");?>
 <!-- END: head -->
 
 <body class="p-4">
     <div class="container-fluid">
         <div class="row">
              <!-- BEGIN: Side Menu -->
-             <?php include("component/sidemenu.php")?>
-            <!-- END: Side Menu -->
+             <?php include("../includes/sidemenu.php");?>
+             <!-- END: Side Menu -->
             <div class="col pt-2 bg-content rounded-5">
                 <div class="">
                     <h2></h2>

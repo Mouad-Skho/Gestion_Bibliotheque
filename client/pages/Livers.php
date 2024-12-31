@@ -1,6 +1,7 @@
 <?php $page="Livers" ?>
 <?php 
-include("bd.php");
+    include("../../shared/libs/bd.php");
+
 $sql = "SELECT livres.id_livre, livres.titre, livres.img,livres.description, auteurs.nom AS auteur
 FROM livres
 JOIN auteurs ON livres.id_auteur = auteurs.id_auteur;
@@ -14,7 +15,7 @@ $livres = $result ->fetchAll(PDO::FETCH_OBJ);
 
 <!-- BEGIN: head -->
 
-<?php include("component/head.php")?>
+<?php include("../includes/head.php")?>
 <!-- END: head -->
 
 <body class="p-4">
@@ -22,7 +23,7 @@ $livres = $result ->fetchAll(PDO::FETCH_OBJ);
         <div class="row">
             <!-- BEGIN: Side Menu -->
 
-            <?php include("component/sidemenu.php")?>
+            <?php include("../includes/sidemenu.php")?>
 
             <!-- END: Side Menu -->
             <div class="col pt-2 bg-content rounded-5">
@@ -332,7 +333,7 @@ $livres = $result ->fetchAll(PDO::FETCH_OBJ);
 
     // دالة لجلب التقييمات من API
     function fetchReviews(livreId) {
-        fetch(`./api/avis.php?id_livre=${livreId}`)
+        fetch(`../includes/api/avis.php?id_livre=${livreId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.error || !data.reviews || data.reviews.length === 0) {
