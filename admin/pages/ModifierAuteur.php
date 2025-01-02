@@ -1,7 +1,64 @@
 <?php
 $page="Modifier Auteur";
 include("../../shared/libs/bd.php");
+if (isset($_POST['Ajouter'])) {
+    $nom = $_POST['nom'];
+    $bio = $_POST['bio'];
 
+    // متغير لتخزين اسم الصورة (فارغ بشكل افتراضي)
+    $fileName = '';
+
+    // التحقق من وجود صورة مرفوعة
+    if (!empty($_FILES["img"]["name"])) {
+        $targetDir = "../img/"; // مسار المجلد الخاص برفع الصور
+        $fileName = basename($_FILES["img"]["name"]); // اسم الصورة
+        $targetFilePath = $targetDir . $fileName; // المسار الكامل للصورة
+        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION); // استخراج الامتداد
+
+        // تحديد أنواع الملفات المسموح بها
+        $allowTypes = array('jpg', 'jpeg', 'png', 'gif');
+        if (in_array($fileType, $allowTypes)) {
+            if (move_uploaded_file($_FILES["img"]["tmp_name"], $targetFilePath)) {
+                echo "Image uploaded successfully: " . $fileName . "<br>";
+                $fileName = $targetFilePath;
+            } else {
+                echo "Error: Unable to upload file. Check directory permissions.<br>";
+                $fileName = ''; 
+            }
+        } else {
+            echo "Error: Unsupported file type ($fileType). Only JPG, JPEG, PNG, & GIF are allowed.<br>";
+            $fileName = ''; 
+        }
+    } else {
+        echo "No image file uploaded.<br>";
+    }
+
+    // التحقق من إدخال الحقول الإلزامية
+    if (!empty($nom)) {
+        try {
+            // إعداد استعلام الإدخال
+            $stmt = $pdo->prepare("INSERT INTO `auteurs` (`nom`, `bio`, `auteur_img`) 
+                VALUES (:nom, :bio, :auteur_img)");
+
+            // ربط القيم بالمتغيرات
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':bio', $bio);
+            $stmt->bindParam(':auteur_img', $fileName); // اسم الصورة (فارغ إذا لم يتم رفع صورة)
+           
+
+            if ($stmt->execute()) {
+                header("location: ajouterauteur.php");
+                exit;
+            } else {
+                echo 'Failed to insert data';
+            }
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    } else {
+        echo 'Ajouter les données obligatoires.';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,11 +103,11 @@ include("../../shared/libs/bd.php");
                                     <h4 class="fw-medium lh-base fs-6 m-0">Informations de Auteur</h4>
                                 </div>
                                 <div class=" p-3 p-md-4">
-                                    <form>
-                                        <div class="row">
+                                <form method="post" enctype="multipart/form-data">
+                                    <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Nom">Nom</label>
-                                                <input id="Nom" type="text" class="form-control" placeholder="Nom" >
+                                                <input id="Nom" type="text" class="form-control" name="nom" placeholder="Nom" >
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Date_De_Naissance">Date De Naissance (seulement l'année)</label>
@@ -60,26 +117,31 @@ include("../../shared/libs/bd.php");
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="décédé-choise">Est-il décédé ou non ?</label>
-                                                <input id="décédé-choise" type="text" class="form-control" placeholder="auteur" >
+                                                <select id="décédé-choise" type="text" class="form-control" placeholder="auteur" >
+                                                    <option value="" selected disabled>Choise etat</option>
+                                                    <option value="1">décédé</option>
+                                                    <option value="2">non</option>
+                                                </select>
                                             </div>
-                                            <div class="col-12 col-md-6 mb-3">
+                                            <div class="col-12 col-md-6 mb-3" id="décédé_div">
                                                 <label class="form-label" for="décédé">Date du décès (seulement l'année)</label>
                                                 <input id="décédé" type="text" class="form-control" placeholder="Date du décès" >
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
-                                                <label class="form-label" for="photo">Sa photo, si elle est disponible</label>
-                                                <input id="photo" type="text" class="form-control" placeholder="Chemin" >
+                                                <label class="form-label" for="img">img</label>
+                                                <input id="img"  type="file" class="form-control" name="img" placeholder="img" >
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Description">Description de l'auteur</label>
-                                                <textarea id="Description" class="form-control" placeholder="Description" ></textarea>
+                                                <textarea id="Description" class="form-control" name="bio" placeholder="Description" ></textarea>
                                             </div>
                                             
                                             
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Modifier</button>
+                                        
+                                        <button type="submit" name="Ajouter" class="btn btn-primary">Ajouter</button>
                                     </form>
                                 </div>
                                 <!-- END: Variable Content -->

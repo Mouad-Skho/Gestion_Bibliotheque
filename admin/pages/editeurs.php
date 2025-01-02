@@ -121,8 +121,7 @@ if (isset($_POST['Ajouter'])) {
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,23 +131,23 @@ if (isset($_POST['Ajouter'])) {
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel-<?= $index; ?>">تعديل معلومات الكتاب</h5>
+                                                        <h5 class="modal-title" id="editModalLabel-<?= $index; ?>">Modifier Informations de Editeur</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="update_livre.php" method="POST">
+                                                        <form method="POST">
                                                             <input type="hidden" name="id_editeur" value="<?= $editeur->id_editeur; ?>">
 
                                                             <div class="mb-3">
-                                                                <label for="editeur-<?= $index; ?>" class="form-label">عنوان الكتاب</label>
+                                                                <label for="editeur-<?= $index; ?>" class="form-label">Editeur</label>
                                                                 <input type="text" class="form-control" id="editeur-<?= $index; ?>" name="editeur"
-                                                                    value="<?= $editeur->name; ?>" required>
+                                                                    value="<?= $editeur->name; ?>" >
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label for="description-<?= $index; ?>" class="form-label">وصف الكتاب</label>
+                                                                <label for="description-<?= $index; ?>" class="form-label">Description</label>
                                                                 <textarea class="form-control" id="description-<?= $index; ?>" name="description" rows="7"
-                                                                        required><?= $editeur->description; ?></textarea>
+                                                                        ><?= $editeur->description; ?></textarea>
                                                             </div>
                                                             <div class="mb-3">
                                                                     <label for="adresse-<?= $index; ?>" class="form-label">Address</label>
@@ -157,7 +156,7 @@ if (isset($_POST['Ajouter'])) {
                                                                 </div>
 
                                                             <div class="mb-3">
-                                                                <label for="img-<?= $index; ?>" class="form-label">رابط الصورة</label>
+                                                                <label for="img-<?= $index; ?>" class="form-label">img</label>
                                                                 <input type="file" name="file" class="form-control" id="img-<?= $index; ?>" >
                                                             </div>
                                                           
@@ -165,7 +164,7 @@ if (isset($_POST['Ajouter'])) {
 
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                                                                <button type="submit" class="btn btn-warning">Modifier</button>
                                                             </div>
                                                         </form>
                                                     </div>

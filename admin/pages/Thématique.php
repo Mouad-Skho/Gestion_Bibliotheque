@@ -40,7 +40,7 @@ if(isset($_POST['Ajouter_Categorie'])){
             $stmt = $pdo->prepare("INSERT INTO `categories` (`id_genre`, `name`, `description`)  
             VALUES (:Genre,:name_Categorie,:description_Categorie)");
 
-$stmt->bindParam(':Genre', $Genre);
+            $stmt->bindParam(':Genre', $Genre);
             $stmt->bindParam(':name_Categorie', $name_Categorie);
             $stmt->bindParam(':description_Categorie', $description_Categorie);
             

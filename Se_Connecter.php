@@ -1,39 +1,73 @@
 <?php
+// include('shared/libs/bd.php');
+// if(isset($_POST["login"])) {
+//     $email = $_POST["email"];
+//     $password = $_POST["password"]; 
+
+//     $sql = ("SELECT * FROM membres WHERE email = ? AND password = ?"); 
+//     $result = $pdo -> prepare($sql);
+//     $result -> execute([$email, $password]);
+
+//     $user = $result -> fetch(PDO::FETCH_OBJ);
+
+//     if($user && !empty($user)){
+
+//         $_SESSION["id_user"] = $user->id_membre;
+
+//         $_SESSION["username"] = $user->nom;
+
+//         $_SESSION["email"] = $user->email;
+//         $_SESSION["role"] = $user->role;
+//         if($user->role == 'admin'){
+//                 header("Location: admin\index.php");
+//         }else{
+//                 echo "client";
+//                 header("Location: client\index.php");
+//             }
+    
+//     }else{
+//         echo "Adresse e-mail ou mot de passe incorrect.";
+//     } 
+// }
 include('shared/libs/bd.php');
-if(isset($_POST["login"])) {
+
+if (isset($_POST["login"])) {
     $email = $_POST["email"];
-    $password = $_POST["password"]; 
+    $password = $_POST["password"];
 
-    $sql = ("SELECT * FROM membres WHERE email = ? AND password = ?"); 
-    $result = $pdo -> prepare($sql);
-    $result -> execute([$email, $password]);
+    // الاستعلام عن المستخدم
+    $sql = "SELECT * FROM membres WHERE email = ? AND password = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$email, $password]);
 
-    $user = $result -> fetch(PDO::FETCH_OBJ);
+    $user = $stmt->fetch(PDO::FETCH_OBJ);
 
-    if($user && !empty($user)){
+    if ($user) {
+        // بدء الجلسة إذا لم تكن قد بدأت
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
+        // تخزين بيانات المستخدم في الجلسة
         $_SESSION["id_user"] = $user->id_membre;
-
         $_SESSION["username"] = $user->nom;
-
         $_SESSION["email"] = $user->email;
         $_SESSION["role"] = $user->role;
-        if($user->role == 'admin'){
-                header("Location: admin\index.php");
-        }else{
-                header("Location: client\index.php");
-            }
-    
-    }else{
+
+        // التحقق من دور المستخدم وإعادة توجيهه
+        if ($user->role === 'admin') {
+            header("Location: admin/index.php");
+            exit;
+        } else {
+            echo "client";
+            header("Location: client/index.php");
+            exit;
+        }
+    } else {
         echo "Adresse e-mail ou mot de passe incorrect.";
-    } 
+    }
 }
 ?>
-<?php
- 
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

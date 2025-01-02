@@ -1,9 +1,79 @@
-<?php $page="Liste Adherents";
+<?php 
+$page="Liste Adherents";
 include("../../shared/libs/bd.php");
 
-$sql = "SELECT * FROM membres";
+$sql = "SELECT * FROM membres  WHERE role = 'user'";
 $result = $pdo->query($sql);
 $Adherents = $result ->fetchAll(PDO::FETCH_OBJ);
+if (isset($_POST['Modifier'])) {
+    $id_membre = $_POST['id_membre'];
+    $nom = $_POST['nom'];
+    $email = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $adresse = $_POST['adresse'];
+    if (!empty($nom)) {
+        try {
+            $stmt = $pdo->prepare("UPDATE `membres` SET `nom` = :nom,`email` = :email,`telephone` = :telephone,`adresse` = :adresse WHERE `id_membre` = :id_membre;"
+            );
+
+            $stmt->bindParam(':id_membre', $id_membre);
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':telephone', $telephone);
+            $stmt->bindParam(':adresse', $adresse);
+            if ($stmt->execute()) {
+                header("location: Adherents.php");
+                exit;
+            } else {
+                echo 'Failed to insert data';
+            }
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }else {
+        // رسالة خطأ إذا كانت الحقول الإلزامية فارغة
+        echo 'Ajouter les données obligatoires.';
+    }
+
+}
+
+if (isset($_POST['Desactiver'])) {
+    $id_membre = $_POST['id_membre'];
+    if (!empty($id_membre)) {
+        try {
+            $stmt = $pdo->prepare("UPDATE `membres` SET status = '1' WHERE `membres`.`id_membre` = :id_membre");
+            $stmt->bindParam(':id_membre', $id_membre);
+            if ($stmt->execute()) {
+                header("location: Adherents.php");
+                exit;
+            } else {
+                echo 'Desactiver Failed';
+            }
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+}
+if (isset($_POST['activer'])) {
+    $id_membre = $_POST['id_membre'];
+    if (!empty($id_membre)) {
+        try {
+            $stmt = $pdo->prepare("UPDATE `membres` SET status = '0' WHERE `membres`.`id_membre` = :id_membre");
+            $stmt->bindParam(':id_membre', $id_membre);
+            if ($stmt->execute()) {
+                header("location: Adherents.php");
+                exit;
+            } else {
+                echo 'activer Failed';
+            }
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,22 +118,24 @@ $Adherents = $result ->fetchAll(PDO::FETCH_OBJ);
                                             <th>email</th>
                                             <th>telephone</th>
                                             <th>Adresse</th>
-                                            <th>Nombre emprunt</th>
                                             <th>Action</th>
                                         </thead>
                                         <tbody>
-                                        <?php foreach($Adherents as $index => $Adherent){  ?>
+                                        <?php foreach($Adherents as $index => $Adherent){  
+                                            $statusClass = ($Adherent->status == 0) ? 'btn-danger' : 'btn-success';
+                                            $statusText = ($Adherent->status == 0) ? 'Désactiver' : 'Activer';
+                                            $dataTarget = ($Adherent->status == 0) ? "deleteModal" : "activeModal";
+                                            ?>
                                             <tr>
                                                 <td><?= $Adherent->nom;?></td>
                                                 <td><?= $Adherent->email;?></td>
                                                 <td><?= $Adherent->telephone;?></td>
                                                 <td><?= $Adherent->adresse;?></td>
-                                                <td><?= $Adherent->n_emprunt;?></td>
                                                 <td>
                                                 <button class="btn btn-sm btn-warning mb-2 me-2 mb-xl-0" data-bs-toggle="modal" data-bs-target="#editModal-<?= $index; ?>">Modifier</button>
                                                 <button
-                                                 data-bs-toggle="modal" data-bs-target="#deleteModal<?=$index; ?>"
-                                                        class="btn btn-sm btn-danger mb-2 mb-xl-0">Désactiver</button></td>
+                                                 data-bs-toggle="modal" data-bs-target="#<?= $dataTarget?><?=$index; ?>"
+                                                        class="btn btn-sm <?= $statusClass ?> mb-2 mb-xl-0"><?= $statusText ?></button></td>
                                             </tr>
                                             <!-- Modal -->
                                             <div class="modal fade" id="editModal-<?= $index; ?>" tabindex="-1"
@@ -102,23 +174,19 @@ $Adherents = $result ->fetchAll(PDO::FETCH_OBJ);
                                                                     ><?= $Adherent->adresse; ?></textarea>
                                                                 </div>
 
-                                                                <div class="mb-3">
-                                                                    <label for="n_emprunt-<?= $index; ?>" class="form-label">Nombre Emprunt</label>
-                                                                    <input type="number" class="form-control" id="n_emprunt-<?= $index; ?>" name="n_emprunt"
-                                                                        value="<?= $Adherent->n_emprunt; ?>">
-                                                                </div>
+
 
                                                                 
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-warning">Modifier</button>
+                                                                    <button type="submit" name="Modifier" class="btn btn-warning">Modifier</button>
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Modal suppression-->
+                                            <!-- Modal Désactiver-->
                                             <div class="modal fade" id="deleteModal<?= $index; ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?= $index; ?>" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -128,12 +196,33 @@ $Adherents = $result ->fetchAll(PDO::FETCH_OBJ);
                                                         </div>
                                                         <div class="modal-body">
                                                         <form method="post">
-                                                            <input type="hidden" name="id_Adherent" value="<?= $Adherent->id_membre; ?>">
-                                                            <p>Êtes-vous sûr de vouloir Désactiver le compte de l'Adherent <strong><?=$Adherent->nom; ?></strong> ? Cette action est irréversible.</p>
+                                                            <input type="hidden" name="id_membre" value="<?= $Adherent->id_membre; ?>">
+                                                            <p>Êtes-vous sûr de vouloir Désactiver le compte de l'Adherent <strong><?=$Adherent->nom; ?></strong> ?</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                            <button type="submit" name="Supprimer" class="btn btn-danger">Désactiver</button>
+                                                            <button type="submit" name="Desactiver" class="btn btn-danger">Désactiver</button>
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal activer-->
+                                            <div class="modal fade" id="activeModal<?= $index; ?>" tabindex="-1" aria-labelledby="activeModalLabel<?= $index; ?>" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-success text-white">
+                                                            <h5 class="modal-title" id="activeModalLabel<?= $index; ?>">Confirmation de activation</h5>
+                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        <form method="post">
+                                                            <input type="hidden" name="id_membre" value="<?= $Adherent->id_membre; ?>">
+                                                            <p>Êtes-vous sûr de vouloir activer le compte de l'Adherent <strong><?=$Adherent->nom; ?></strong> ?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                            <button type="submit" name="activer" class="btn btn-success">activer</button>
                                                         </div>
                                                         </form>
                                                     </div>

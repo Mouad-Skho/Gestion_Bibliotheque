@@ -1,7 +1,12 @@
 <?php
 $page="Modifier liver";
 include("../../shared/libs/bd.php");
-
+$sql = "SELECT livres.*, auteurs.nom AS auteur, categories.name AS categorie
+FROM livres
+JOIN auteurs ON livres.id_auteur = auteurs.id_auteur
+JOIN categories ON livres.id_categorie = categories.id_categorie";
+$result = $pdo->query($sql);
+$livres = $result ->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -45,17 +50,15 @@ include("../../shared/libs/bd.php");
                             </select>
                         </div>
 
-                        <!-- <input type="text" class="form-control me-2" placeholder="Chercher"> -->
                         <select id="select-beast" placeholder="Select a person..." autocomplete="off" class="from-select w-75 me-2">
                             <option value="">Select a person...</option>
-                            <option value="4">Thomas Edison</option>
-                            <option value="1">Nikola</option>
-                            <option value="3">Nikola Tesla</option>
-                            <option value="5">Arnold Schwarzenegger</option>
-                        </select>
-                        <button class="btn btn-primary">Chercher</button>
-
-                    </div>
+                            
+                                
+                            </select>
+                            <button class="btn btn-primary" onclick="submitSearch()">Chercher</button>
+                            
+                        </div>
+                        <!-- <input type="text" class="form-control me-2" placeholder="Chercher"> -->
                     <!-- END: Chercher Menu -->
 
                     <!-- BEGIN: Main Content -->
@@ -69,7 +72,8 @@ include("../../shared/libs/bd.php");
                                     <h4 class="fw-medium lh-base fs-6 m-0">Informations de livre</h4>
                                 </div>
                                 <div class=" p-3 p-md-4">
-                                    <form>
+                                    <form method="post" id="update_form">
+                                    <input type="hidden" name="id_livre" id="id_livre">
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="ISBN">ISBN</label>
@@ -83,22 +87,22 @@ include("../../shared/libs/bd.php");
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="auteur">Auteur</label>
-                                                <input id="auteur" type="text" class="form-control" placeholder="auteur">
+                                                <input id="auteur" name="auteur" type="text" class="form-control" placeholder="auteur">
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="genre">Genre</label>
-                                                <input id="genre" type="text" class="form-control" placeholder="genre">
+                                                <input id="genre" name="genre" type="text" class="form-control" placeholder="genre">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="annee_publication">Annee Publication</label>
-                                                <input id="annee_publication" type="text" class="form-control"
+                                                <input id="annee_publication" name="annee_publication" type="text" class="form-control"
                                                     placeholder="annee_publication">
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="stock">Stock</label>
-                                                <input id="stock" type="text" class="form-control" placeholder="stock">
+                                                <input id="stock" name="emplacement" type="text" class="form-control" placeholder="stock">
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Emplacement">Emplacement</label>
@@ -107,8 +111,8 @@ include("../../shared/libs/bd.php");
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Catégories">Catégories</label>
-                                                <select class="form-select" name="" id="">
-                                                    <option value=""selected disabled>Catégories</option>
+                                                <select class="form-select" name="categorie" >
+                                                    <option id="categorie" value=""selected disabled>Catégories</option>
                                                     <option value="">L'art</option>
                                                     <option value="">Philosophie</option>
                                                     <option value="">economie</option>
@@ -148,12 +152,83 @@ include("../../shared/libs/bd.php");
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.4.1/js/tom-select.complete.js" integrity="sha512-4C/xXn1q4nHq8VQ7980qwUp2brDFW/22/0eqa8506uQUxCh06teLlJQZ/kcdmpd4AJkeKVnk9CPiYzhV6HOb0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>   
+    <!-- <script>   
         new TomSelect("#select-beast",{
             create: false,
             sortField: {
                 field: "text",
                 direction: "asc"
+            }
+        });
+    </script> -->
+           <!--    <script> 
+        function submitSearch() {
+        const searchBy = document.getElementById('search_by').value;
+        const selectedLivre = document.getElementById('select-beast').value;
+    
+        if (!searchBy && !selectedLivre) {
+            alert('Veuillez sélectionner une option pour rechercher.');
+            return;
+        }
+    
+        // إرسال البيانات إلى السيرفر
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'process_search.php'; // عدّل الرابط حسب الحاجة
+    
+        // إضافة الحقول إلى النموذج
+        if (searchBy) {
+            const searchByInput = document.createElement('input');
+            searchByInput.type = 'hidden';
+            searchByInput.name = 'search_by';
+            searchByInput.value = searchBy;
+            form.appendChild(searchByInput);
+        }
+    
+        if (selectedLivre) {
+            const selectedLivreInput = document.createElement('input');
+            selectedLivreInput.type = 'hidden';
+            selectedLivreInput.name = 'livre_id';
+            selectedLivreInput.value = selectedLivre;
+            form.appendChild(selectedLivreInput);
+        }
+    
+        document.body.appendChild(form);
+        form.submit();
+    }
+    </script> -->
+    <script>
+        // جلب البيانات من PHP
+        const livres = <?= json_encode($livres); ?>;
+        console.log(livres);
+
+        // تهيئة القائمة المنسدلة مع Tom Select
+        const select = new TomSelect("#select-beast", {
+            options: livres.map(livre => ({
+                value: livre.id_livre, // القيمة الفريدة (id_livre)
+                text: `${livre.titre} - ${livre.auteur}`, // النص الذي يظهر
+            })),
+            placeholder: "Sélectionnez un livre...",
+        });
+
+        // عند اختيار كتاب، تحديث الحقول في النموذج
+        select.on('change', function(value) {
+            const selectedLivre = livres.find(livre => livre.id_livre == value);
+
+            if (selectedLivre) {
+                // تعبئة الحقول بناءً على الكتاب المختار
+                document.getElementById('id_livre').value = selectedLivre.id_livre;
+                document.getElementById('ISBN').value = selectedLivre.ISBN || ''; 
+                document.getElementById('titre').value = selectedLivre.titre || '';
+                document.getElementById('auteur').value = selectedLivre.auteur || '';
+                document.getElementById('genre').value = selectedLivre.genre || '';
+                document.getElementById('annee_publication').value = selectedLivre.annee_publication || '';
+                document.getElementById('stock').value = selectedLivre.stock || '';
+                document.getElementById('Emplacement').value = selectedLivre.emplacement || '';
+                document.getElementById('categorie').value = selectedLivre.categorie || '';
+            } else {
+                // تفريغ الحقول إذا لم يتم اختيار أي كتاب
+                document.getElementById('update_form').reset();
             }
         });
     </script>

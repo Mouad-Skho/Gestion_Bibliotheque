@@ -1,6 +1,42 @@
 <?php
 $page="Ajouter adherent";
 include("../../shared/libs/bd.php");
+
+if (isset($_POST['Ajouter'])) {
+    $nom = $_POST['nom'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $telephone = $_POST['telephone'];
+    $adresse = $_POST['adresse'];
+    // التحقق من إدخال الحقول الإلزامية
+    if (!empty($nom) && !empty($email) && !empty($password) && !empty($telephone) && !empty($adresse) ) {
+        try {
+            // إعداد استعلام الإدخال
+            $stmt = $pdo->prepare("INSERT INTO `membres` (`nom`, `email `, `password`, `telephone`, `adresse`) 
+                VALUES (:nom, :email , :password, :telephone, :adresse)");
+
+            // ربط القيم بالمتغيرات
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':telephone', $telephone);
+            $stmt->bindParam(':adresse', $adresse);
+            
+
+            if ($stmt->execute()) {
+                header("location: Ajouteradherent.php");
+                exit;
+            } else {
+                echo 'Failed to insert data';
+            }
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    } else {
+        echo 'Ajouter les données obligatoires.';
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -41,28 +77,34 @@ include("../../shared/libs/bd.php");
                                     <h4 class="fw-medium lh-base fs-6 m-0">Informations Personnelles</h4>
                                 </div>
                                  <div class=" p-3 p-md-4">
-                                    <form>
+                                    <form method="post">
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Nom">Nom</label>
-                                                <input id="Nom" type="text" class="form-control" placeholder="Nom">
+                                                <input id="Nom" name="nom" type="text" class="form-control" placeholder="Nom">
                                             </div>
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="E-mail">E-mail</label>
-                                                <input id="E-mail" type="text" class="form-control" placeholder="E-mail">
+                                                <input id="E-mail" name="email" type="email" class="form-control" placeholder="E-mail">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label" for="password">password</label>
+                                                <input id="password" name="password" type="password" class="form-control" placeholder="password">
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label" for="Adresse">Adresse</label>
+                                                <input id="Adresse" name="adresse" type="text" class="form-control" placeholder="Adresse">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12 col-md-6 mb-3">
                                                 <label class="form-label" for="Telephone">Telephone</label>
-                                                <input id="Telephone" type="text" class="form-control" placeholder="Telephone">
-                                            </div>
-                                            <div class="col-12 col-md-6 mb-3">
-                                                <label class="form-label" for="Adresse">Adresse</label>
-                                                <input id="Adresse" type="text" class="form-control" placeholder="Adresse">
+                                                <input id="Telephone" name="telephone" type="text" class="form-control" placeholder="Telephone">
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                                        <button type="submit" name="Ajouter" class="btn btn-primary">Ajouter</button>
                                     </form>
                                 </div>
                                 <!-- END: Variable Content -->

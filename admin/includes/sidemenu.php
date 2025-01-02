@@ -140,7 +140,7 @@
                     </li> -->
                     <li class="mb-2">
                         <a href="Emprunts.php" class="d-flex  ps-1 text-decoration-none side-menu rounded-start-5 <?php if($page == 'Emprunts') {?> side-menu--active <?php } ?>">
-                            <div class="side-menu__icon mx-3"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512.016 512.016" style="enable-background:new 0 0 512.016 512.016;" xml:space="preserve" width="24" height="24"><g><path d="M158.992,299.058C68.075,307.276-1.191,384.099,0.016,475.378v4.629c0,17.673,14.327,32,32,32l0,0   c17.673,0,32-14.327,32-32v-5.909c-0.962-56.045,40.398-103.838,96-110.933c58.693-5.82,110.992,37.042,116.812,95.735   c0.344,3.47,0.518,6.954,0.521,10.441v10.667c0,17.673,14.327,32,32,32l0,0c17.673,0,32-14.327,32-32v-10.667   c-0.104-94.363-76.685-170.774-171.047-170.67C166.528,298.675,162.756,298.804,158.992,299.058z"/><path d="M170.682,256.008c70.692,0,128-57.308,128-128s-57.308-128-128-128s-128,57.308-128,128   C42.753,198.671,100.019,255.937,170.682,256.008z M170.682,64.008c35.346,0,64,28.654,64,64s-28.654,64-64,64s-64-28.654-64-64   S135.336,64.008,170.682,64.008z"/><path d="M480.016,213.341h-32v-32c0-17.673-14.327-32-32-32s-32,14.327-32,32v32h-32c-17.673,0-32,14.327-32,32s14.327,32,32,32h32   v32c0,17.673,14.327,32,32,32s32-14.327,32-32l0,0v-32h32c17.673,0,32-14.327,32-32S497.689,213.341,480.016,213.341z"/></g></svg>
+                            <div class="side-menu__icon mx-3"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="24" height="24"><path d="m2.395,16.061c-.87.104-1.696.437-2.395.964V5C0,2.624,1.672.575,4,.1v15.9h-1c-.203,0-.406.02-.605.061Zm15.605-6.061c.691,0,1.361.088,2,.252v-5.252c0-2.761-2.239-5-5-5H6v16h4.252c.888-3.45,4.02-6,7.748-6Zm-8,8H3c-1.657,0-3,1.343-3,3s1.343,3,3,3h9.709c-1.661-1.466-2.709-3.61-2.709-6Zm14,0c0,3.314-2.686,6-6,6s-6-2.686-6-6,2.686-6,6-6,6,2.686,6,6Zm-3.002-1.242l-1.5-1.5c-.251-.252-.629-.329-.957-.19-.328.136-.541.456-.541.812v1.121h-3c-.552,0-1,.447-1,1s.448,1,1,1h3v1.121c0,.355.213.676.541.812.109.045.223.067.336.067.229,0,.453-.089.621-.257l1.5-1.5c.685-.685.685-1.8,0-2.485Z"/></svg>
                             </div>
                             <div class="d-none d-xxl-inline side-menu__title fs-6">Emprunts</div>
                         </a>
@@ -218,6 +218,14 @@
                             <div class="d-none  d-xxl-inline side-menu__title fs-6">Modifier Editeur</div>
                         </a>
                     </li> -->
+                    <li class="mb-2">
+                        <a href="Statistique.php" class="d-flex  ps-1 text-decoration-none side-menu  rounded-start-5 <?php if($page == 'Statistique') {?> side-menu--active <?php } ?>">
+                            <div class="side-menu__icon mx-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="24" height="24"><rect x="2" y="8" width="20" height="2"/><rect x="2" y="4" width="20" height="2"/><path d="M21,24H3a3,3,0,0,1-3-3V12H8v2a2,2,0,0,0,2,2h4a2,2,0,0,0,2-2V12h8v9A3,3,0,0,1,21,24Z"/><rect x="2" y="8" width="20" height="2"/><rect x="2" y="4" width="20" height="2"/></svg>
+                            </div>
+                            <div class="d-none d-xxl-inline side-menu__title fs-6">Statistique</div>
+                        </a>
+                    </li>
                 </ul>
                 <div class="side-nav__devider my-4 d-none d-md-block"></div>
             </div>
